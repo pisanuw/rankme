@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items Item[]
+  votes Vote[]
+}
+
+model Item {
+  id          String   @id @default(cuid())
+  topicId     String
+  title       String
+  imageUrl    String?
+  elo         Float    @default(1000)
+  gamesPlayed Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  topic    Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  winsAs   Vote[] @relation("WinnerVotes")
+  votesAsA Vote[] @relation("ItemAVotes")
+  votesAsB Vote[] @relation("ItemBVotes")
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  sessionId String
+  topicId   String
+  itemAId   String
+  itemBId   String
+  winnerId  String
+  createdAt DateTime @default(now())
+
+  topic  Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  itemA  Item  @relation("ItemAVotes", fields: [itemAId], references: [id], onDelete: Cascade)
+  itemB  Item  @relation("ItemBVotes", fields: [itemBId], references: [id], onDelete: Cascade)
+  winner Item  @relation("WinnerVotes", fields: [winnerId], references: [id], onDelete: Cascade)
+}
