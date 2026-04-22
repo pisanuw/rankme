@@ -53,3 +53,9 @@ Cloudinary cloud name: dewdsnyhg, API Key: REDACTED, API Secret: REDACTED
 ## 2026-04-22T15:05
 
 push the code to github and deploy the project
+
+## 2026-04-22T15:20
+
+The admin panel url is wrong 
+https://rankme.onrender.com/pisan-admin-rankme-2026 gives error
+https://rankme-1ttb.onrender.com/pisan-admin-rankme-2026 also gives 404
